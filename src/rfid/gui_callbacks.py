@@ -38,8 +38,11 @@ def callback_antenna_3(event: ValueChangeEventArguments, speedway):
 def callback_antenna_4(event: ValueChangeEventArguments, speedway):
     callback_antenna_generic(event, speedway, 4)
 
-def callback_hex_encoding(event: ValueChangeEventArguments):
+def callback_hex_encoding(event: ValueChangeEventArguments, speedway):
+    speedway.hex_encoding = event.value
+    print(speedway.hex_encoding)
     ui.notify(f'Hexadecimal encoding: {event.value}')
+
 
 def callback_report_timeout(event: ValueChangeEventArguments):
     ui.notify(f'Updated report period time: {event.value} ms')      
@@ -48,12 +51,14 @@ def callback_configure_speedway(event: ValueChangeEventArguments, speedway):
     speedway.configure()
     ui.notify(f'Speedway configured')
 
-def callback_speedway(event: ValueChangeEventArguments, speedway_elements):
+def callback_run_speedway(event: ValueChangeEventArguments, speedway, speedway_gui_elements):
     if event.value == 1:
-        ui.notify(f'Speedway stopped')  
-        for element in speedway_elements:
+        speedway.reader.disconnect()
+        ui.notify(f'Speedway stopped')
+        for element in speedway_gui_elements:
             element.enable() 
     elif event.value == 2:
+        speedway.reader.connect()
         ui.notify(f'Speedway started')
-        for element in speedway_elements:
+        for element in speedway_gui_elements:
             element.disable()

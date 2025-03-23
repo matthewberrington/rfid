@@ -29,7 +29,7 @@ class Speedway:
 
 	def cb (reader, tag_reports):
 	    for tag_report in tag_reports:
-	        report = TagReportData(config_dict, tag_report)
+	        report = TagReportData(config_dict, tag_report, hex_encoding=self.hex_encoding)
 	        if not report.EPC in ignore_until.keys():
 	            report.export_to_csv(r'C:\Users\pfber\Downloads\tmp.csv')
 	            ignore_until[report.EPC] = report.FirstSeenTimestampUTC + ignore_tag_time*1e6

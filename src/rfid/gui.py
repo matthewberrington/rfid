@@ -18,7 +18,7 @@ def gui(speedway):
         antenna2 = ui.checkbox('2', on_change=lambda e: gui_callbacks.callback_antenna_2(e, speedway))
         antenna3 = ui.checkbox('3', on_change=lambda e: gui_callbacks.callback_antenna_3(e, speedway))
         antenna4 = ui.checkbox('4', on_change=lambda e: gui_callbacks.callback_antenna_4(e, speedway))
-    hex_switch = ui.switch('Hexadecimal encoding', value = True, on_change=gui_callbacks.callback_hex_encoding)
+    hex_switch = ui.switch('Hexadecimal encoding', value = True, on_change=lambda e: gui_callbacks.callback_hex_encoding(e, speedway))
     report_period_number = ui.number(label='Report period (milliseconds)', value=100, precision = 0, format='%d',
               on_change=gui_callbacks.callback_report_timeout)
     ui.number(label='Ignore tag duration (seconds)', value=20, format='%.2f',
@@ -27,6 +27,6 @@ def gui(speedway):
     configure_button = ui.button('Configure Speedway',
               on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway))
     elements = [antenna1, antenna2, antenna3, antenna4, hex_switch, report_period_number, configure_button]
-    toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'}, on_change= lambda e: gui_callbacks.callback_speedway(e, elements))
+    toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'}, on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements))
 
     ui.run()

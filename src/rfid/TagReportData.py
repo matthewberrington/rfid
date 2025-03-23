@@ -2,8 +2,11 @@ import datetime
 import csv
 import os
 class TagReportData:
-    def __init__(self, config_dict, tag_report):
-        self.EPC = int(tag_report['EPC'], 16)
+    def __init__(self, config_dict, tag_report, hex_encoding = True):
+        if hex_encoding:
+            self.EPC = int(tag_report['EPC'], 16)
+        else:
+            self.EPC = int(tag_report['EPC'])
 
         for content, enabled in config_dict['tag_content_selector'].items():
             attr = enabler_to_key[content]
