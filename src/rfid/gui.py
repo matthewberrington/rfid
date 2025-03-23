@@ -4,12 +4,16 @@ import gui_callbacks
 
 def gui(speedway):
     ui.markdown('## General controls')
-    
+    ui.button('Shutdown', icon='close', color = 'red')
+    ui.button('Synchronise clocks', icon='sync')
     with ui.row():
-        ui.button('Race start', on_click=lambda: gui_callbacks.callback_racestart(racestart_label))
+        ui.button('Race start',
+            icon = 'timer',
+            on_click=lambda: gui_callbacks.callback_racestart(racestart_label))
         racestart_label = ui.markdown("yyyy/mm/dd HH:MM:SS")
         
-    ui.switch('Enable keyboard wedge', on_change=gui_callbacks.callback_keyboard_wedge)
+    keyboard_wedge_button = ui.switch('Enable keyboard wedge',
+        on_change=lambda e: gui_callbacks.callback_keyboard_wedge(e, speedway, keyboard_wedge_button))
 
     ui.markdown('## Speedway controls')
 
@@ -30,8 +34,12 @@ def gui(speedway):
               on_change=lambda e: gui_callbacks.callback_ignore_time(e, speedway))
 
     configure_button = ui.button('Configure Speedway',
-              on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway))
+        icon = 'build',
+        on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway))
     elements = [antenna1, antenna2, antenna3, antenna4, hex_switch, report_period_number, configure_button]
-    toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'}, on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements))
+    toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'},
+
+        value = 1,
+        on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements))
 
     ui.run()

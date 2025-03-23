@@ -39,7 +39,6 @@ def configure(config_dict):
 
 if __name__ == '__main__':
     reader = configure(DEFAULT_CONFIG)    
-
     reader.connect()
     print('Started')    
 

@@ -7,8 +7,19 @@ def callback_racestart(racestart_label):
     racestart_label.content = t.strftime("%Y/%m/%d %H:%M:%S")
     ui.notify('Race start captured')
 
-def callback_keyboard_wedge(event: ValueChangeEventArguments):
-    ui.notify(f'Keyboard wedge: {event.value}')
+def keyboard_wedge_delay_start(speedway, button):
+    speedway.keyboard_wedge_enabled = True
+    button.enable()
+    ui.notify(f'Keyboard wedge enabled: True')
+
+def callback_keyboard_wedge(event: ValueChangeEventArguments, speedway, button):
+    if event.value == True:
+        button.disable()
+        ui.notify('Keyboard wedge starting in 5 seconds...')
+        ui.timer(5.0, lambda: keyboard_wedge_delay_start(speedway, button), once=True)
+    else:
+        speedway.keyboard_wedge_enabled = event.value
+        ui.notify(f'Keyboard wedge enabled: {event.value}')
 
 def callback_ignore_time(event: ValueChangeEventArguments, speedway):
     speedway.ignore_tag_time = event.value
@@ -45,7 +56,6 @@ def callback_hex_encoding(event: ValueChangeEventArguments, speedway):
 def callback_report_timeout(event: ValueChangeEventArguments, speedway):
     speedway.config_dict['report_timeout_ms'] = event.value
     ui.notify(f'Updated report period time: {int(event.value)} ms')   
-    print(type(event.value))
 
 def callback_configure_speedway(event: ValueChangeEventArguments, speedway):
     speedway.configure()

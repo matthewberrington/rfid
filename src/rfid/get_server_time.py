@@ -31,7 +31,5 @@ if __name__ == '__main__':
     username = "root"
     password = "impinj"
     
-    # set_time_UTC(host, username, password)
-
     print(get_time_UTC(host, username, password))
     print(datetime.datetime.now(datetime.timezone.utc))
