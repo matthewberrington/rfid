@@ -2,8 +2,6 @@ from nicegui import ui
 from get_server_time import get_time_UTC
 from nicegui.events import ValueChangeEventArguments
 
-# config_dict, reader, cb parameters
-
 def callback_racestart(racestart_label):
     t = get_time_UTC(host = "speedwayr-12-36-0F.local", username = "root", password = "impinj")
     racestart_label.content = t.strftime("%Y/%m/%d %H:%M:%S")
@@ -17,7 +15,6 @@ def callback_ignore_time(event: ValueChangeEventArguments, speedway):
     ui.notify(f'Updated ignore time: {event.value} s')  
 
 def callback_antenna_generic(event: ValueChangeEventArguments, speedway, antenna_id):
-    ui.notify(f'Antenna {antenna_id}: {event.value}')
     antennas = speedway.config_dict['antennas']
     if event.value == True:
         antennas.append(antenna_id)
@@ -26,6 +23,7 @@ def callback_antenna_generic(event: ValueChangeEventArguments, speedway, antenna
         antennas.remove(antenna_id)
         antennas.sort()
     speedway.config_dict['antennas'] = antennas
+    ui.notify(f'Antenna {antenna_id} enabled: {event.value}')
 
 def callback_antenna_1(event: ValueChangeEventArguments, speedway):
     callback_antenna_generic(event, speedway, 1)
@@ -44,9 +42,10 @@ def callback_hex_encoding(event: ValueChangeEventArguments, speedway):
     print(speedway.hex_encoding)
     ui.notify(f'Hexadecimal encoding: {event.value}')
 
-
-def callback_report_timeout(event: ValueChangeEventArguments):
-    ui.notify(f'Updated report period time: {event.value} ms')      
+def callback_report_timeout(event: ValueChangeEventArguments, speedway):
+    speedway.config_dict['report_timeout_ms'] = event.value
+    ui.notify(f'Updated report period time: {int(event.value)} ms')   
+    print(type(event.value))
 
 def callback_configure_speedway(event: ValueChangeEventArguments, speedway):
     speedway.configure()

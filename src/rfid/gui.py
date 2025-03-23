@@ -4,6 +4,7 @@ import gui_callbacks
 
 def gui(speedway):
     ui.markdown('## General controls')
+    
     with ui.row():
         ui.button('Race start', on_click=lambda: gui_callbacks.callback_racestart(racestart_label))
         racestart_label = ui.markdown("yyyy/mm/dd HH:MM:SS")
@@ -19,9 +20,13 @@ def gui(speedway):
         antenna3 = ui.checkbox('3', on_change=lambda e: gui_callbacks.callback_antenna_3(e, speedway))
         antenna4 = ui.checkbox('4', on_change=lambda e: gui_callbacks.callback_antenna_4(e, speedway))
     hex_switch = ui.switch('Hexadecimal encoding', value = True, on_change=lambda e: gui_callbacks.callback_hex_encoding(e, speedway))
-    report_period_number = ui.number(label='Report period (milliseconds)', value=100, precision = 0, format='%d',
-              on_change=gui_callbacks.callback_report_timeout)
-    ui.number(label='Ignore tag duration (seconds)', value=20, format='%.2f',
+    report_period_number = ui.number(
+        label='Report period (milliseconds)',
+        value=100,
+        min = 10, #10 ms minimum to avoid PC being overwhelmed
+        format='%d',
+              on_change=lambda e: gui_callbacks.callback_report_timeout(e, speedway))
+    ui.number(label='Ignore tag duration (seconds)', value=20, format='%d',
               on_change=lambda e: gui_callbacks.callback_ignore_time(e, speedway))
 
     configure_button = ui.button('Configure Speedway',
