@@ -1,1 +1,9 @@
 .venv
+src/rfid/__pycache__/get_server_time.cpython-39.pyc
+src/rfid/__pycache__/gui_callbacks.cpython-39.pyc
+src/rfid/__pycache__/TagReportData.cpython-39.pyc
+src/rfig.egg-info/dependency_links.txt
+src/rfig.egg-info/PKG-INFO
+src/rfig.egg-info/requires.txt
+src/rfig.egg-info/SOURCES.txt
+src/rfig.egg-info/top_level.txt
