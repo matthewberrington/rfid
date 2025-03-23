@@ -37,10 +37,13 @@ def callback_report_timeout(event: ValueChangeEventArguments):
 def callback_configure_speedway(event: ValueChangeEventArguments):
     ui.notify(f'Speedway configured')
 
-def callback_speedway(antenna1):
-    # if event.value == 1:
-    #     ui.notify(f'Speedway stopped')   
-    # elif event.value == 2:
-    ui.notify(f'Speedway started')   
-    antenna1.disable()
+def callback_speedway(event: ValueChangeEventArguments, speedway_elements):
+    if event.value == 1:
+        ui.notify(f'Speedway stopped')  
+        for element in speedway_elements:
+            element.enable() 
+    elif event.value == 2:
+        ui.notify(f'Speedway started')
+        for element in speedway_elements:
+            element.disable()
 

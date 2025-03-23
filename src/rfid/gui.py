@@ -16,16 +16,16 @@ ui.markdown('## Speedway controls')
 with ui.row(): 
     ui.markdown("Antennas:")
     antenna1 = ui.checkbox('1', on_change=gui_callbacks.callback_antenna_1)
-    ui.checkbox('2', on_change=gui_callbacks.callback_antenna_2)
-    ui.checkbox('3', on_change=gui_callbacks.callback_antenna_3)
-    ui.checkbox('4', on_change=gui_callbacks.callback_antenna_4)
-ui.switch('Hexadecimal encoding', on_change=gui_callbacks.callback_hex_encoding)
-ui.number(label='Report period (milliseconds)', value=100, format='%.0f',
+    antenna2 = ui.checkbox('2', on_change=gui_callbacks.callback_antenna_2)
+    antenna3 = ui.checkbox('3', on_change=gui_callbacks.callback_antenna_3)
+    antenna4 = ui.checkbox('4', on_change=gui_callbacks.callback_antenna_4)
+hex_switch = ui.switch('Hexadecimal encoding', on_change=gui_callbacks.callback_hex_encoding)
+report_period_number = ui.number(label='Report period (milliseconds)', value=100, format='%.0f',
           on_change=gui_callbacks.callback_report_timeout)
 
-ui.button('Configure Speedway',
-          on_click=gui_callbacks.callback_configure_speeway)
-
-toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'}, value=1, on_change= lambda: gui_callbacks.callback_speedway(antenna1))
+configure_button = ui.button('Configure Speedway',
+          on_click=gui_callbacks.callback_configure_speedway)
+elements = [antenna1, antenna2, antenna3, antenna4, hex_switch, report_period_number, configure_button]
+toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'}, value=1, on_change= lambda e: gui_callbacks.callback_speedway(e, elements))
 
 ui.run()
