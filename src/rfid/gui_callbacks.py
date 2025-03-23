@@ -2,6 +2,8 @@ from nicegui import ui
 from get_server_time import get_time_UTC
 from nicegui.events import ValueChangeEventArguments
 
+# config_dict, reader, cb parameters
+
 def callback_racestart(racestart_label):
     t = get_time_UTC(host = "speedwayr-12-36-0F.local", username = "root", password = "impinj")
     racestart_label.content = t.strftime("%Y/%m/%d %H:%M:%S")
@@ -10,31 +12,41 @@ def callback_racestart(racestart_label):
 def callback_keyboard_wedge(event: ValueChangeEventArguments):
     ui.notify(f'Keyboard wedge: {event.value}')
 
-def callback_hex_encoding(event: ValueChangeEventArguments):
-    ui.notify(f'Hexadecimal encoding: {event.value}')
-
-def callback_hex_encoding(event: ValueChangeEventArguments):
-    ui.notify(f'Hexadecimal encoding: {event.value}')
-
-def callback_antenna_1(event: ValueChangeEventArguments):
-    ui.notify(f'Antenna 1: {event.value}')
-
-def callback_antenna_2(event: ValueChangeEventArguments):
-    ui.notify(f'Antenna 2: {event.value}')
-
-def callback_antenna_3(event: ValueChangeEventArguments):
-    ui.notify(f'Antenna 3: {event.value}')
-
-def callback_antenna_4(event: ValueChangeEventArguments):
-    ui.notify(f'Antenna 4: {event.value}')
-
 def callback_ignore_time(event: ValueChangeEventArguments):
     ui.notify(f'Updated ignore time: {event.value} s')  
+
+def callback_antenna_generic(event: ValueChangeEventArguments, speedway, antenna_id):
+    ui.notify(f'Antenna {antenna_id}: {event.value}')
+    antennas = speedway.config_dict['antennas']
+    if event.value == True:
+        antennas.append(antenna_id)
+        antennas.sort()
+    else:
+        antennas.remove(antenna_id)
+        antennas.sort()
+    speedway.config_dict['antennas'] = antennas
+    print(speedway.config_dict['antennas'])
+
+def callback_antenna_1(event: ValueChangeEventArguments, speedway):
+    callback_antenna_generic(event, speedway, 1)
+
+def callback_antenna_2(event: ValueChangeEventArguments, speedway):
+    callback_antenna_generic(event, speedway, 2)
+
+def callback_antenna_3(event: ValueChangeEventArguments, speedway):
+    callback_antenna_generic(event, speedway, 3)
+
+def callback_antenna_4(event: ValueChangeEventArguments, speedway):
+    callback_antenna_generic(event, speedway, 4)
+
+def callback_hex_encoding(event: ValueChangeEventArguments):
+    ui.notify(f'Hexadecimal encoding: {event.value}')
 
 def callback_report_timeout(event: ValueChangeEventArguments):
     ui.notify(f'Updated report period time: {event.value} ms')      
 
 def callback_configure_speedway(event: ValueChangeEventArguments):
+    reader = configure(config_dict)
     ui.notify(f'Speedway configured')
 
 def callback_speedway(event: ValueChangeEventArguments, speedway_elements):
@@ -46,4 +58,3 @@ def callback_speedway(event: ValueChangeEventArguments, speedway_elements):
         ui.notify(f'Speedway started')
         for element in speedway_elements:
             element.disable()
-

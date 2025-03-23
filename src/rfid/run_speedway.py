@@ -31,30 +31,14 @@ def cb (reader, tag_reports):
             report.export_to_csv(r'C:\Users\pfber\Downloads\tmp.csv')
             ignore_until[report.EPC] = report.FirstSeenTimestampUTC + ignore_tag_time*1e6
 
-
-
-if __name__ == '__main__':
-    config_dict = {
-    'antennas': [1],
-    'report_every_n_tags': 1000,
-    'report_timeout_ms': 1000,
-    # 'start_trigger_type': 'Periodic',
-    # 'offset': 0,
-    'period': 1, #ms to wait before start inventory again
-    'tag_content_selector':{
-        'EnableROSpecID': False,
-        'EnableSpecIndex': False,
-        'EnableInventoryParameterSpecID': False,
-        'EnableAntennaID': False,
-        'EnableChannelIndex': False,
-        'EnablePeakRSSI': False,
-        'EnableFirstSeenTimestamp': True,
-        'EnableLastSeenTimestamp': False,
-        'EnableTagSeenCount': True,
-        'EnableAccessSpecID': False,}}
+def configure(config_dict):
     config = llrp.LLRPReaderConfig(config_dict)
     reader = llrp.LLRPReaderClient('speedwayr-12-36-0f', config=config)
     reader.add_tag_report_callback(cb)
+    return reader
+
+if __name__ == '__main__':
+    reader = configure(DEFAULT_CONFIG)    
 
     reader.connect()
     print('Started')    
