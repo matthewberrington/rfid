@@ -1,10 +1,11 @@
-from nicegui import ui
-from get_server_time import get_time_UTC, set_time_UTC
+from nicegui import ui, app
+from rshell_commands import get_time_UTC
 from nicegui.events import ValueChangeEventArguments
 
 def callback_shutdown(event: ValueChangeEventArguments, speedway):
-    1
-    
+    # speedway.reader.disconnect()
+    app.shutdown()
+
 def callback_synchronise(event: ValueChangeEventArguments, speedway):
     speedway.synchronise()
     ui.notify('Speedway synchronised with PC')

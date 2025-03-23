@@ -1,4 +1,4 @@
-from nicegui import ui
+from nicegui import ui, app
 from nicegui.events import ValueChangeEventArguments
 import gui_callbacks
 
@@ -12,7 +12,7 @@ def gui(speedway):
     ui.button('Synchronise clocks',
         icon='sync',
         on_click=lambda e: gui_callbacks.callback_synchronise(e, speedway))
-    
+
     with ui.row():
         ui.button('Race start',
             icon = 'timer',
