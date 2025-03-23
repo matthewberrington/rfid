@@ -31,8 +31,16 @@ def callback_antenna_4(event: ValueChangeEventArguments):
 def callback_ignore_time(event: ValueChangeEventArguments):
     ui.notify(f'Updated ignore time: {event.value} s')  
 
-def callback_speedway(event: ValueChangeEventArguments):
-    if event.value == 1:
-        ui.notify(f'Speedway stopped')   
-    elif event.value == 2:
-        ui.notify(f'Speedway started')   
+def callback_report_timeout(event: ValueChangeEventArguments):
+    ui.notify(f'Updated report period time: {event.value} ms')      
+
+def callback_configure_speedway(event: ValueChangeEventArguments):
+    ui.notify(f'Speedway configured')
+
+def callback_speedway(antenna1):
+    # if event.value == 1:
+    #     ui.notify(f'Speedway stopped')   
+    # elif event.value == 2:
+    ui.notify(f'Speedway started')   
+    antenna1.disable()
+

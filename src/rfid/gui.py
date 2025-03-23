@@ -2,24 +2,30 @@ from nicegui import ui
 from nicegui.events import ValueChangeEventArguments
 import gui_callbacks
 
+ui.markdown('## General controls')
 with ui.row():
     ui.button('Race start', on_click=lambda: gui_callbacks.callback_racestart(racestart_label))
     racestart_label = ui.markdown("yyyy/mm/dd HH:MM:SS")
     
 ui.switch('Enable keyboard wedge', on_change=gui_callbacks.callback_keyboard_wedge)
-ui.switch('Hexadecimal encoding', on_change=gui_callbacks.callback_hex_encoding)
+
+ui.number(label='Ignore tag duration (seconds)', value=20, format='%.2f',
+          on_change=gui_callbacks.callback_ignore_time)
+
+ui.markdown('## Speedway controls')
 with ui.row(): 
     ui.markdown("Antennas:")
-    ui.checkbox('1', on_change=gui_callbacks.callback_antenna_1)
+    antenna1 = ui.checkbox('1', on_change=gui_callbacks.callback_antenna_1)
     ui.checkbox('2', on_change=gui_callbacks.callback_antenna_2)
     ui.checkbox('3', on_change=gui_callbacks.callback_antenna_3)
     ui.checkbox('4', on_change=gui_callbacks.callback_antenna_4)
-ui.number(label='Ignore tag duration', value=20, format='%.2f',
-          on_change=gui_callbacks.callback_ignore_time)
-result = ui.label()
+ui.switch('Hexadecimal encoding', on_change=gui_callbacks.callback_hex_encoding)
+ui.number(label='Report period (milliseconds)', value=100, format='%.0f',
+          on_change=gui_callbacks.callback_report_timeout)
 
-toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'}, value=1, on_change=gui_callbacks.callback_speedway)
+ui.button('Configure Speedway',
+          on_click=gui_callbacks.callback_configure_speeway)
 
-
+toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'}, value=1, on_change= lambda: gui_callbacks.callback_speedway(antenna1))
 
 ui.run()
