@@ -1,3 +1,5 @@
+from sllurp import llrp
+
 class Speedway:
 	def __init__(self, host, username, password):
 		self.hex_encoding = True
@@ -20,10 +22,10 @@ class Speedway:
 		        'EnableTagSeenCount': True,
 		        'EnableAccessSpecID': False}}
 
-	def configure(config_dict):
+	def configure(self):
 	    config = llrp.LLRPReaderConfig(self.config_dict)
 	    self.reader = llrp.LLRPReaderClient('speedwayr-12-36-0f', config=config)
-	    reader.add_tag_report_callback(cb)
+	    self.reader.add_tag_report_callback(self.cb)
 
 	def cb (reader, tag_reports):
 	    for tag_report in tag_reports:

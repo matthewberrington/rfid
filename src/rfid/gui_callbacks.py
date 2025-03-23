@@ -25,7 +25,6 @@ def callback_antenna_generic(event: ValueChangeEventArguments, speedway, antenna
         antennas.remove(antenna_id)
         antennas.sort()
     speedway.config_dict['antennas'] = antennas
-    print(speedway.config_dict['antennas'])
 
 def callback_antenna_1(event: ValueChangeEventArguments, speedway):
     callback_antenna_generic(event, speedway, 1)
@@ -45,8 +44,8 @@ def callback_hex_encoding(event: ValueChangeEventArguments):
 def callback_report_timeout(event: ValueChangeEventArguments):
     ui.notify(f'Updated report period time: {event.value} ms')      
 
-def callback_configure_speedway(event: ValueChangeEventArguments):
-    reader = configure(config_dict)
+def callback_configure_speedway(event: ValueChangeEventArguments, speedway):
+    speedway.configure()
     ui.notify(f'Speedway configured')
 
 def callback_speedway(event: ValueChangeEventArguments, speedway_elements):
