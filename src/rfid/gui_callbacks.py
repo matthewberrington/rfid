@@ -1,22 +1,29 @@
 from nicegui import ui
-from get_server_time import get_time_UTC
+from get_server_time import get_time_UTC, set_time_UTC
 from nicegui.events import ValueChangeEventArguments
+
+def callback_shutdown(event: ValueChangeEventArguments, speedway):
+    1
+    
+def callback_synchronise(event: ValueChangeEventArguments, speedway):
+    speedway.synchronise()
+    ui.notify('Speedway synchronised with PC')
 
 def callback_racestart(racestart_label):
     t = get_time_UTC(host = "speedwayr-12-36-0F.local", username = "root", password = "impinj")
     racestart_label.content = t.strftime("%Y/%m/%d %H:%M:%S")
     ui.notify('Race start captured')
 
-def keyboard_wedge_delay_start(speedway, button):
+def keyboard_wedge_delay_start(speedway, switch):
     speedway.keyboard_wedge_enabled = True
-    button.enable()
+    switch.enable()
     ui.notify(f'Keyboard wedge enabled: True')
 
-def callback_keyboard_wedge(event: ValueChangeEventArguments, speedway, button):
+def callback_keyboard_wedge(event: ValueChangeEventArguments, speedway, switch):
     if event.value == True:
-        button.disable()
+        switch.disable()
         ui.notify('Keyboard wedge starting in 5 seconds...')
-        ui.timer(5.0, lambda: keyboard_wedge_delay_start(speedway, button), once=True)
+        ui.timer(5.0, lambda: keyboard_wedge_delay_start(speedway, switch), once=True)
     else:
         speedway.keyboard_wedge_enabled = event.value
         ui.notify(f'Keyboard wedge enabled: {event.value}')

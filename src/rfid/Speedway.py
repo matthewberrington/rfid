@@ -1,7 +1,11 @@
 from sllurp import llrp
+from rshell_commands import get_time_UTC, set_time_UTC
 
 class Speedway:
     def __init__(self, host, username, password):
+        self.host = host
+        self.username = username
+        self.password = password
         self.keyboard_wedge_enabled = False
         self.hex_encoding = True
         self.reader = None
@@ -29,7 +33,7 @@ class Speedway:
         self.reader = llrp.LLRPReaderClient('speedwayr-12-36-0f', config=config)
         self.reader.add_tag_report_callback(self.cb)
 
-    def cb (reader, tag_reports):
+    def cb (self, reader, tag_reports):
         for tag_report in tag_reports:
             report = TagReportData(config_dict, tag_report, hex_encoding=self.hex_encoding)
             if not report.EPC in self.ignore_until.keys():
@@ -42,3 +46,9 @@ class Speedway:
                 self.ignore_until[report.EPC] = report.FirstSeenTimestampUTC + self.ignore_tag_time*1e6
                 if self.keyboard_wedge_enabled:
                     keyboard.write(str(EPC)+'\r\n')
+
+    def synchronise(self):
+        return set_time_UTC(self.host, self.username, self.password)
+
+    def get_timestamp(self):
+        return get_time_UTC(self.host, self.username, self.password)

@@ -4,8 +4,15 @@ import gui_callbacks
 
 def gui(speedway):
     ui.markdown('## General controls')
-    ui.button('Shutdown', icon='close', color = 'red')
-    ui.button('Synchronise clocks', icon='sync')
+    ui.button('Shutdown',
+        icon='close',
+        color = 'red',
+        on_click=lambda e: gui_callbacks.callback_shutdown(e, speedway))
+
+    ui.button('Synchronise clocks',
+        icon='sync',
+        on_click=lambda e: gui_callbacks.callback_synchronise(e, speedway))
+    
     with ui.row():
         ui.button('Race start',
             icon = 'timer',
