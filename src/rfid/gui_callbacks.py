@@ -12,7 +12,8 @@ def callback_racestart(racestart_label):
 def callback_keyboard_wedge(event: ValueChangeEventArguments):
     ui.notify(f'Keyboard wedge: {event.value}')
 
-def callback_ignore_time(event: ValueChangeEventArguments):
+def callback_ignore_time(event: ValueChangeEventArguments, speedway):
+    speedway.ignore_tag_time = event.value
     ui.notify(f'Updated ignore time: {event.value} s')  
 
 def callback_antenna_generic(event: ValueChangeEventArguments, speedway, antenna_id):

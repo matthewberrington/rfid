@@ -22,7 +22,7 @@ def gui(speedway):
     report_period_number = ui.number(label='Report period (milliseconds)', value=100, precision = 0, format='%d',
               on_change=gui_callbacks.callback_report_timeout)
     ui.number(label='Ignore tag duration (seconds)', value=20, format='%.2f',
-              on_change=gui_callbacks.callback_ignore_time)
+              on_change=lambda e: gui_callbacks.callback_ignore_time(e, speedway))
 
     configure_button = ui.button('Configure Speedway',
               on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway))
