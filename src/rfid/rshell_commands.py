@@ -1,5 +1,6 @@
 import datetime
 import paramiko
+from zoneinfo import ZoneInfo
 
 def send_command(host, username, password, command):
     client = paramiko.client.SSHClient()
@@ -18,6 +19,7 @@ def get_time_UTC(host, username, password):
     ret = send_command(host, username, password, command)
     response_list = ret.decode().split('\n')
     rfid_time_UTC = datetime.datetime.strptime(response_list[5][9:-1],  '%a %b %d %H:%M:%S %Z %Y')
+    rfid_time_UTC = rfid_time_UTC.replace(tzinfo=datetime.timezone.utc)
     return rfid_time_UTC
 
 def set_time_UTC(host, username, password):

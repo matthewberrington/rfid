@@ -1,9 +1,10 @@
 from nicegui import ui, app
 from rshell_commands import get_time_UTC
 from nicegui.events import ValueChangeEventArguments
+import pyperclip
 
 def callback_shutdown(event: ValueChangeEventArguments, speedway):
-    # speedway.reader.disconnect()
+    speedway.reader.disconnect()
     app.shutdown()
 
 def callback_synchronise(event: ValueChangeEventArguments, speedway):
@@ -11,8 +12,10 @@ def callback_synchronise(event: ValueChangeEventArguments, speedway):
     ui.notify('Speedway synchronised with PC')
 
 def callback_racestart(racestart_label):
-    t = get_time_UTC(host = "speedwayr-12-36-0F.local", username = "root", password = "impinj")
-    racestart_label.content = t.strftime("%Y/%m/%d %H:%M:%S")
+    t_utc = get_time_UTC(host = "speedwayr-12-36-0F.local", username = "root", password = "impinj")
+    t_syd = t_utc.astimezone()
+    racestart_label.content = t_syd.strftime("%Y/%m/%d %H:%M:%S")
+    pyperclip.copy(t_syd.strftime("%H:%M:%S"))
     ui.notify('Race start captured')
 
 def keyboard_wedge_delay_start(speedway, switch):
@@ -58,7 +61,6 @@ def callback_antenna_4(event: ValueChangeEventArguments, speedway):
 
 def callback_hex_encoding(event: ValueChangeEventArguments, speedway):
     speedway.hex_encoding = event.value
-    print(speedway.hex_encoding)
     ui.notify(f'Hexadecimal encoding: {event.value}')
 
 def callback_report_timeout(event: ValueChangeEventArguments, speedway):

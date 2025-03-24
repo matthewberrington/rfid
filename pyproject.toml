@@ -7,4 +7,4 @@ name = "rfig"
 description = "An Example Project"
 version = "0.1"
 readme = "README.md"
-dependencies = ["paramiko", "sllurp", "keyboard", "pandas", "nicegui"]
+dependencies = ["paramiko", "sllurp", "keyboard", "pandas", "nicegui", "pyperclip"]

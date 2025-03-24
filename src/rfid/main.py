@@ -20,7 +20,6 @@ config_dict = {
         'EnableTagSeenCount': True,
         'EnableAccessSpecID': False,}}
 
-
 host = "speedwayr-12-36-0F.local"
 username = "root"
 password = "impinj"

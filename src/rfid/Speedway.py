@@ -1,5 +1,8 @@
 from sllurp import llrp
 from rshell_commands import get_time_UTC, set_time_UTC
+from TagReportData import TagReportData
+import keyboard
+import datetime
 
 class Speedway:
     def __init__(self, host, username, password):
@@ -35,17 +38,25 @@ class Speedway:
 
     def cb (self, reader, tag_reports):
         for tag_report in tag_reports:
-            report = TagReportData(config_dict, tag_report, hex_encoding=self.hex_encoding)
+            report = TagReportData(tag_report, self.hex_encoding)
             if not report.EPC in self.ignore_until.keys():
                 report.export_to_csv(r'C:\Users\pfber\Downloads\tmp.csv')
                 self.ignore_until[report.EPC] = report.FirstSeenTimestampUTC + self.ignore_tag_time*1e6
                 if self.keyboard_wedge_enabled:
-                    keyboard.write(str(EPC)+'\r\n')
+                    t = datetime.datetime.fromtimestamp(report.FirstSeenTimestampUTC/1e6)
+                    keyboard.write(str(report.EPC))
+                    keyboard.press_and_release('tab')
+                    keyboard.write(t.strftime("%H:%M:%S.%f"))
+                    keyboard.press_and_release('enter')
             if self.ignore_until[report.EPC] < report.FirstSeenTimestampUTC:
                 report.export_to_csv(r'C:\Users\pfber\Downloads\tmp.csv')
                 self.ignore_until[report.EPC] = report.FirstSeenTimestampUTC + self.ignore_tag_time*1e6
                 if self.keyboard_wedge_enabled:
-                    keyboard.write(str(EPC)+'\r\n')
+                    t = datetime.datetime.fromtimestamp(report.FirstSeenTimestampUTC/1e6)
+                    keyboard.write(str(report.EPC))
+                    keyboard.press_and_release('tab')
+                    keyboard.write(t.strftime("%H:%M:%S.%f"))
+                    keyboard.press_and_release('enter')
 
     def synchronise(self):
         return set_time_UTC(self.host, self.username, self.password)

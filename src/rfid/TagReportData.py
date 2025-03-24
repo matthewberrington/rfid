@@ -2,26 +2,19 @@ import datetime
 import csv
 import os
 class TagReportData:
-    def __init__(self, config_dict, tag_report, hex_encoding = True):
+    def __init__(self, tag_report, hex_encoding):
+        for parameter in tag_parameters:
+            if parameter in tag_report.keys():
+                setattr(self, parameter, tag_report[parameter])
+            else:
+                setattr(self, parameter, None)
         if hex_encoding:
             self.EPC = int(tag_report['EPC'], 16)
         else:
             self.EPC = int(tag_report['EPC'])
-
-        for content, enabled in config_dict['tag_content_selector'].items():
-            attr = enabler_to_key[content]
-            if enabled:
-                # if 'Timestamp' in content:
-                #     timestamp = datetime.datetime.fromtimestamp(tag_report[attr]/1000000) #convert from us to s
-                #     setattr(self, attr, timestamp)
-                # else:
-                setattr(self, attr, tag_report[attr])
-            else:
-                setattr(self, attr, None)
-
     
     def export_to_csv(self, filepath):
-        columns = ['EPC',*enabler_to_key.values()]
+        columns = ['EPC',*tag_parameters]
         if not os.path.isfile(filepath):
             with open(filepath, 'a', newline='') as f:
                 writer = csv.writer(f)
@@ -41,15 +34,14 @@ class TagReportData:
                      self.TagSeenCount,
                      self.AccessSpecID])
 
-enabler_to_key = {
-    'EnableROSpecID': 'ROSpecID',
-    'EnableSpecIndex': 'SpecIndex',
-    'EnableInventoryParameterSpecID': 'InventoryParameterSpecID',
-    'EnableAntennaID': 'AntennaID',
-    'EnablePeakRSSI': 'PeakRSSI',
-    'EnableChannelIndex': 'ChannelIndex',
-    'EnableFirstSeenTimestamp': 'FirstSeenTimestampUTC',
-    'EnableLastSeenTimestamp': 'LastSeenTimestampUTC',
-    'EnableTagSeenCount': 'TagSeenCount',
-    'EnableAccessSpecID': 'AccessSpecID',
-}  
+tag_parameters = [
+    'ROSpecID',
+    'SpecIndex',
+    'InventoryParameterSpecID',
+    'AntennaID',
+    'PeakRSSI',
+    'ChannelIndex',
+    'FirstSeenTimestampUTC',
+    'LastSeenTimestampUTC',
+    'TagSeenCount',
+    'AccessSpecID']
