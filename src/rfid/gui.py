@@ -17,7 +17,7 @@ def gui(speedway):
         ui.button('Race start',
             icon = 'timer',
             on_click=lambda: gui_callbacks.callback_racestart(racestart_label))
-        racestart_label = ui.markdown("yyyy/mm/dd HH:MM:SS")
+        racestart_label = ui.markdown("dd/mm/yyyy HH:MM:SS")
         
     keyboard_wedge_button = ui.switch('Enable keyboard wedge',
         on_change=lambda e: gui_callbacks.callback_keyboard_wedge(e, speedway, keyboard_wedge_button))
@@ -34,19 +34,23 @@ def gui(speedway):
     report_period_number = ui.number(
         label='Report period (milliseconds)',
         value=100,
-        min = 10, #10 ms minimum to avoid PC being overwhelmed
+        min=10, #10 ms minimum to avoid PC being overwhelmed
         format='%d',
               on_change=lambda e: gui_callbacks.callback_report_timeout(e, speedway))
-    ui.number(label='Ignore tag duration (seconds)', value=20, format='%d',
-              on_change=lambda e: gui_callbacks.callback_ignore_time(e, speedway))
+    ignore_tag_number = ui.number(
+        label='Ignore tag duration (seconds)',
+        value=60,
+        min=20,
+        format='%d',
+        on_change=lambda e: gui_callbacks.callback_ignore_time(e, speedway))
 
     configure_button = ui.button('Configure Speedway',
         icon = 'build',
         on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway))
-    elements = [antenna1, antenna2, antenna3, antenna4, hex_switch, report_period_number, configure_button]
+    elements_to_lock = [antenna1, antenna2, antenna3, antenna4, hex_switch, report_period_number, configure_button, ignore_tag_number]
     toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'},
 
         value = 1,
-        on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements))
+        on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements_to_lock))
 
     ui.run()

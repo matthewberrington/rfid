@@ -23,5 +23,7 @@ config_dict = {
 host = "speedwayr-12-36-0F.local"
 username = "root"
 password = "impinj"
+log_directory = "r'C:\Users\pfber\Downloads"
+
 speedway = Speedway(host, username, password)
 gui.gui(speedway)
