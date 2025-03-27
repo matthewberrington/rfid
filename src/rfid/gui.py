@@ -19,8 +19,10 @@ def gui(speedway):
             on_click=lambda: gui_callbacks.callback_racestart(racestart_label))
         racestart_label = ui.markdown("dd/mm/yyyy HH:MM:SS")
         
-    keyboard_wedge_button = ui.switch('Enable keyboard wedge',
-        on_change=lambda e: gui_callbacks.callback_keyboard_wedge(e, speedway, keyboard_wedge_button))
+    keyboard_wedge_switch = ui.switch(
+        'Enable keyboard wedge',
+        on_change=lambda e: gui_callbacks.callback_keyboard_wedge(e, speedway, keyboard_wedge_switch))
+    keyboard_wedge_switch.disable()
 
     ui.markdown('## Speedway controls')
 
@@ -49,8 +51,7 @@ def gui(speedway):
         on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway))
     elements_to_lock = [antenna1, antenna2, antenna3, antenna4, hex_switch, report_period_number, configure_button, ignore_tag_number]
     toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'},
-
         value = 1,
-        on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements_to_lock))
+        on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements_to_lock, keyboard_wedge_switch))
 
     ui.run()

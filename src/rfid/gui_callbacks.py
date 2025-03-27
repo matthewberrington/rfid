@@ -71,14 +71,22 @@ def callback_configure_speedway(event: ValueChangeEventArguments, speedway):
     speedway.configure()
     ui.notify(f'Speedway configured')
 
-def callback_run_speedway(event: ValueChangeEventArguments, speedway, speedway_gui_elements):
+def callback_run_speedway(event: ValueChangeEventArguments, speedway, elements_to_lock, keyboard_wedge_switch):
     if event.value == 1:
+        # Turn off keyboard wedge
+        keyboard_wedge_switch.value = False
+        print(speedway.keyboard_wedge_enabled)
+        # Disable keyboard wedge switch
+        keyboard_wedge_switch.disable()
         speedway.reader.disconnect()
         ui.notify(f'Speedway stopped')
-        for element in speedway_gui_elements:
+        for element in elements_to_lock:
             element.enable() 
     elif event.value == 2:
         speedway.reader.connect()
         ui.notify(f'Speedway started')
-        for element in speedway_gui_elements:
+        # Allow keyboard wedge to be turned on
+        keyboard_wedge_switch.enable()
+        # Key speedway settings
+        for element in elements_to_lock:
             element.disable()
