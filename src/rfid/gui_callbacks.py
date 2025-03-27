@@ -75,7 +75,6 @@ def callback_run_speedway(event: ValueChangeEventArguments, speedway, elements_t
     if event.value == 1:
         # Turn off keyboard wedge
         keyboard_wedge_switch.value = False
-        print(speedway.keyboard_wedge_enabled)
         # Disable keyboard wedge switch
         keyboard_wedge_switch.disable()
         speedway.reader.disconnect()

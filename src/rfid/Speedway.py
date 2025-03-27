@@ -37,6 +37,7 @@ class Speedway:
         self.reader.add_tag_report_callback(self.cb)
 
     def cb (self, reader, tag_reports):
+        tag_reports = self.sort_reports(tag_reports)
         for tag_report in tag_reports:
             report = TagReportData(tag_report, self.hex_encoding)
             if not report.EPC in self.ignore_until.keys():
@@ -63,3 +64,12 @@ class Speedway:
 
     def get_timestamp(self):
         return get_time_UTC(self.host, self.username, self.password)
+    
+    def sort_reports(self, tag_reports):
+        ret = tag_reports
+        if tag_reports:
+            if 'FirstSeenTimestampUTC' in tag_reports[0].keys():
+                t = [tag_report['FirstSeenTimestampUTC'] for tag_report in tag_reports]
+                t_sorted, tag_reports_sorted = zip(*sorted(zip(t, tag_reports)))
+                ret = tag_reports_sorted
+        return ret
