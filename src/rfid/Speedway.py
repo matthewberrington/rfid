@@ -3,12 +3,14 @@ from rshell_commands import get_time_UTC, set_time_UTC
 from TagReportData import TagReportData
 import keyboard
 import datetime
+import os
 
 class Speedway:
-    def __init__(self, host, username, password):
+    def __init__(self, host, username, password, export_directory):
         self.host = host
         self.username = username
         self.password = password
+        self.export_directory = export_directory
         self.keyboard_wedge_enabled = False
         self.hex_encoding = True
         self.reader = None
@@ -41,8 +43,8 @@ class Speedway:
         
         for tag_report in tag_reports:
             report = TagReportData(tag_report, self.hex_encoding)
-            report.export_report(r'C:\Users\pfber\Downloads\tmp.csv')
-
+            date_suffix = '_' + datetime.datetime.now().strftime('%Y-%m-%d')
+            report.export_report(os.path.join(self.export_directory, 'tag_reports'+date_suffix+'.csv'))
             if not report.EPC in self.ignore_until.keys():
                 heed_report = True
             elif self.ignore_until[report.EPC] < report.FirstSeenTimestampUTC:
@@ -51,7 +53,7 @@ class Speedway:
                 heed_report = False
             
             if heed_report:
-                report.export_report_simple(r'C:\Users\pfber\Downloads\tmp_human.csv')
+                report.export_report_simple(os.path.join(self.export_directory, 'tag_reports_human'+date_suffix+'.csv'))
                 self.ignore_until[report.EPC] = report.FirstSeenTimestampUTC + self.ignore_tag_time*1e6
                 if self.keyboard_wedge_enabled:
                     self.type_for_excel(report)
