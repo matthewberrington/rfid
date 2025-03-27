@@ -14,7 +14,7 @@ def callback_synchronise(event: ValueChangeEventArguments, speedway):
 def callback_racestart(racestart_label):
     t_utc = get_time_UTC(host = "speedwayr-12-36-0F.local", username = "root", password = "impinj")
     t_syd = t_utc.astimezone()
-    racestart_label.content = t_syd.strftime("%Y/%m/%d %H:%M:%S")
+    racestart_label.content = t_syd.strftime("%d/%m/%Y %H:%M:%S")
     pyperclip.copy(t_syd.strftime("%H:%M:%S"))
     ui.notify('Race start captured')
 
@@ -24,10 +24,11 @@ def keyboard_wedge_delay_start(speedway, switch):
     ui.notify(f'Keyboard wedge enabled: True')
 
 def callback_keyboard_wedge(event: ValueChangeEventArguments, speedway, switch):
+    WEDGE_DELAY = 10.0
     if event.value == True:
         switch.disable()
-        ui.notify('Keyboard wedge starting in 5 seconds...')
-        ui.timer(5.0, lambda: keyboard_wedge_delay_start(speedway, switch), once=True)
+        ui.notify(f'Keyboard wedge starting in {WEDGE_DELAY} seconds...')
+        ui.timer(WEDGE_DELAY, lambda: keyboard_wedge_delay_start(speedway, switch), once=True)
     else:
         speedway.keyboard_wedge_enabled = event.value
         ui.notify(f'Keyboard wedge enabled: {event.value}')

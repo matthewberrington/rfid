@@ -38,26 +38,30 @@ class Speedway:
 
     def cb (self, reader, tag_reports):
         tag_reports = self.sort_reports(tag_reports)
+        
         for tag_report in tag_reports:
             report = TagReportData(tag_report, self.hex_encoding)
+            report.export_report(r'C:\Users\pfber\Downloads\tmp.csv')
+
             if not report.EPC in self.ignore_until.keys():
-                report.export_to_csv(r'C:\Users\pfber\Downloads\tmp.csv')
+                heed_report = True
+            elif self.ignore_until[report.EPC] < report.FirstSeenTimestampUTC:
+                heed_report = True
+            else:
+                heed_report = False
+            
+            if heed_report:
+                report.export_report_simple(r'C:\Users\pfber\Downloads\tmp_human.csv')
                 self.ignore_until[report.EPC] = report.FirstSeenTimestampUTC + self.ignore_tag_time*1e6
                 if self.keyboard_wedge_enabled:
-                    t = datetime.datetime.fromtimestamp(report.FirstSeenTimestampUTC/1e6)
-                    keyboard.write(str(report.EPC))
-                    keyboard.press_and_release('tab')
-                    keyboard.write(t.strftime("%H:%M:%S.%f"))
-                    keyboard.press_and_release('enter')
-            if self.ignore_until[report.EPC] < report.FirstSeenTimestampUTC:
-                report.export_to_csv(r'C:\Users\pfber\Downloads\tmp.csv')
-                self.ignore_until[report.EPC] = report.FirstSeenTimestampUTC + self.ignore_tag_time*1e6
-                if self.keyboard_wedge_enabled:
-                    t = datetime.datetime.fromtimestamp(report.FirstSeenTimestampUTC/1e6)
-                    keyboard.write(str(report.EPC))
-                    keyboard.press_and_release('tab')
-                    keyboard.write(t.strftime("%H:%M:%S.%f"))
-                    keyboard.press_and_release('enter')
+                    self.type_for_excel(report)
+                    
+    def type_for_excel(self, report):
+        t = datetime.datetime.fromtimestamp(report.FirstSeenTimestampUTC/1e6)
+        keyboard.write(str(report.EPC))
+        keyboard.press_and_release('tab')
+        keyboard.write(t.strftime("%H:%M:%S.%f"))
+        keyboard.press_and_release('enter')
 
     def synchronise(self):
         return set_time_UTC(self.host, self.username, self.password)

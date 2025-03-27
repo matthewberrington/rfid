@@ -13,7 +13,7 @@ class TagReportData:
         else:
             self.EPC = int(tag_report['EPC'])
     
-    def export_to_csv(self, filepath):
+    def export_report(self, filepath):
         columns = ['EPC',*tag_parameters]
         if not os.path.isfile(filepath):
             with open(filepath, 'a', newline='') as f:
@@ -33,6 +33,21 @@ class TagReportData:
                      self.LastSeenTimestampUTC,
                      self.TagSeenCount,
                      self.AccessSpecID])
+            
+    def export_report_simple(self, filepath):
+        dt = datetime.datetime.fromtimestamp(self.FirstSeenTimestampUTC/1e6)
+        columns = ['EPC', 'Time', 'Date']
+        if not os.path.isfile(filepath):
+            with open(filepath, 'a', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerow(columns)
+
+        with open(filepath, 'a', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(
+                [self.EPC,
+                    dt.strftime("%H:%M:%S.%f"),
+                    dt.strftime("%d/%m/%Y")])
 
 tag_parameters = [
     'ROSpecID',

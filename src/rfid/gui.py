@@ -17,7 +17,7 @@ def gui(speedway):
         ui.button('Race start',
             icon = 'timer',
             on_click=lambda: gui_callbacks.callback_racestart(racestart_label))
-        racestart_label = ui.markdown("yyyy/mm/dd HH:MM:SS")
+        racestart_label = ui.markdown("dd/mm/yyyy HH:MM:SS")
         
     keyboard_wedge_switch = ui.switch(
         'Enable keyboard wedge',
