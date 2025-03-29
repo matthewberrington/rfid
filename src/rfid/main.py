@@ -1,7 +1,7 @@
 from Speedway import Speedway
 import gui
 
-if __name__ == '__main__':
+def main():
     config_dict = {
         'antennas': [1],
         'report_every_n_tags': 1000,
@@ -28,3 +28,7 @@ if __name__ == '__main__':
 
     speedway = Speedway(host, username, password, export_directory)
     gui.gui(speedway, export_directory)
+
+if __name__ == '__main__':
+    main()
+    
