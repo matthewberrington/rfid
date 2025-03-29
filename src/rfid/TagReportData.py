@@ -1,9 +1,23 @@
 import datetime
 import csv
 import os
+
+TAG_PARAMETERS = [
+    'ROSpecID',
+    'SpecIndex',
+    'InventoryParameterSpecID',
+    'AntennaID',
+    'PeakRSSI',
+    'ChannelIndex',
+    'FirstSeenTimestampUTC',
+    'LastSeenTimestampUTC',
+    'TagSeenCount',
+    'AccessSpecID']
+
+
 class TagReportData:
     def __init__(self, tag_report, hex_encoding):
-        for parameter in tag_parameters:
+        for parameter in TAG_PARAMETERS:
             if parameter in tag_report.keys():
                 setattr(self, parameter, tag_report[parameter])
             else:
@@ -14,7 +28,7 @@ class TagReportData:
             self.EPC = int(tag_report['EPC'])
     
     def export_report(self, filepath):
-        columns = ['EPC',*tag_parameters]
+        columns = ['EPC',*TAG_PARAMETERS]
         if not os.path.isfile(filepath):
             with open(filepath, 'a', newline='') as f:
                 writer = csv.writer(f)
@@ -48,15 +62,3 @@ class TagReportData:
                 [self.EPC,
                     dt.strftime("%H:%M:%S.%f"),
                     dt.strftime("%d/%m/%Y")])
-
-tag_parameters = [
-    'ROSpecID',
-    'SpecIndex',
-    'InventoryParameterSpecID',
-    'AntennaID',
-    'PeakRSSI',
-    'ChannelIndex',
-    'FirstSeenTimestampUTC',
-    'LastSeenTimestampUTC',
-    'TagSeenCount',
-    'AccessSpecID']
