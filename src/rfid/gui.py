@@ -28,10 +28,11 @@ def gui(speedway, export_directory):
 
     with ui.row(): 
         ui.markdown("Antennas:")
-        antenna1 = ui.checkbox('1', on_change=lambda e: gui_callbacks.callback_antenna_1(e, speedway))
-        antenna2 = ui.checkbox('2', on_change=lambda e: gui_callbacks.callback_antenna_2(e, speedway))
-        antenna3 = ui.checkbox('3', on_change=lambda e: gui_callbacks.callback_antenna_3(e, speedway))
-        antenna4 = ui.checkbox('4', on_change=lambda e: gui_callbacks.callback_antenna_4(e, speedway))
+        antenna1 = ui.checkbox('1', on_change=lambda e: gui_callbacks.callback_antenna_1(e, speedway, configure_button))
+        antenna2 = ui.checkbox('2', on_change=lambda e: gui_callbacks.callback_antenna_2(e, speedway, configure_button))
+        antenna3 = ui.checkbox('3', on_change=lambda e: gui_callbacks.callback_antenna_3(e, speedway, configure_button))
+        antenna4 = ui.checkbox('4', on_change=lambda e: gui_callbacks.callback_antenna_4(e, speedway, configure_button))
+    
     hex_switch = ui.switch('Hexadecimal encoding', value = True, on_change=lambda e: gui_callbacks.callback_hex_encoding(e, speedway))
     report_period_number = ui.number(
         label='Report period (milliseconds)',
@@ -48,11 +49,12 @@ def gui(speedway, export_directory):
 
     configure_button = ui.button('Configure Speedway',
         icon = 'build',
-        on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway, toggle1))
+        on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway, speedway_toggle))
+    configure_button.disable()
     elements_to_lock = [antenna1, antenna2, antenna3, antenna4, hex_switch, report_period_number, configure_button, ignore_tag_number]
-    toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'},
+    speedway_toggle = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'},
         value = 1,
         on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements_to_lock, keyboard_wedge_switch))
-    toggle1.disable()
+    speedway_toggle.disable()
 
     ui.run()

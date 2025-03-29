@@ -51,7 +51,7 @@ def callback_ignore_time(event: ValueChangeEventArguments, speedway):
     speedway.ignore_tag_time = event.value
     ui.notify(f'Updated ignore time: {event.value} s')  
 
-def callback_antenna_generic(event: ValueChangeEventArguments, speedway, antenna_id):
+def callback_antenna_generic(event: ValueChangeEventArguments, speedway, configure_button, antenna_id):
     antennas = speedway.config_dict['antennas']
     if event.value == True:
         antennas.append(antenna_id)
@@ -60,19 +60,24 @@ def callback_antenna_generic(event: ValueChangeEventArguments, speedway, antenna
         antennas.remove(antenna_id)
         antennas.sort()
     speedway.config_dict['antennas'] = antennas
+    if speedway.config_dict['antennas']:
+        configure_button.enable()
+    else:
+        configure_button.disable()
     ui.notify(f'Antenna {antenna_id} enabled: {event.value}')
 
-def callback_antenna_1(event: ValueChangeEventArguments, speedway):
-    callback_antenna_generic(event, speedway, 1)
 
-def callback_antenna_2(event: ValueChangeEventArguments, speedway):
-    callback_antenna_generic(event, speedway, 2)
+def callback_antenna_1(event: ValueChangeEventArguments, speedway, configure_button):
+    callback_antenna_generic(event, speedway, configure_button, 1)
 
-def callback_antenna_3(event: ValueChangeEventArguments, speedway):
-    callback_antenna_generic(event, speedway, 3)
+def callback_antenna_2(event: ValueChangeEventArguments, speedway, configure_button):
+    callback_antenna_generic(event, speedway, configure_button, 2)
 
-def callback_antenna_4(event: ValueChangeEventArguments, speedway):
-    callback_antenna_generic(event, speedway, 4)
+def callback_antenna_3(event: ValueChangeEventArguments, speedway, configure_button):
+    callback_antenna_generic(event, speedway, configure_button, 3)
+
+def callback_antenna_4(event: ValueChangeEventArguments, speedway, configure_button):
+    callback_antenna_generic(event, speedway, configure_button, 4)
 
 def callback_hex_encoding(event: ValueChangeEventArguments, speedway):
     speedway.hex_encoding = event.value
