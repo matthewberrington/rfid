@@ -3,6 +3,8 @@ from rshell_commands import get_time_UTC
 from nicegui.events import ValueChangeEventArguments
 import pyperclip
 import datetime
+import os
+import csv
 
 def callback_shutdown(event: ValueChangeEventArguments, speedway):
     speedway.reader.disconnect()
