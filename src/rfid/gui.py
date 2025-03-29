@@ -48,10 +48,11 @@ def gui(speedway, export_directory):
 
     configure_button = ui.button('Configure Speedway',
         icon = 'build',
-        on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway))
+        on_click=lambda e: gui_callbacks.callback_configure_speedway(e, speedway, toggle1))
     elements_to_lock = [antenna1, antenna2, antenna3, antenna4, hex_switch, report_period_number, configure_button, ignore_tag_number]
     toggle1 = ui.toggle({1: 'Stop Speedway', 2: 'Start Speedway'},
         value = 1,
         on_change= lambda e: gui_callbacks.callback_run_speedway(e, speedway, elements_to_lock, keyboard_wedge_switch))
+    toggle1.disable()
 
     ui.run()

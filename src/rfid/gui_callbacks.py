@@ -82,8 +82,9 @@ def callback_report_timeout(event: ValueChangeEventArguments, speedway):
     speedway.config_dict['report_timeout_ms'] = event.value
     ui.notify(f'Updated report period time: {int(event.value)} ms')   
 
-def callback_configure_speedway(event: ValueChangeEventArguments, speedway):
+def callback_configure_speedway(event: ValueChangeEventArguments, speedway, speedway_toggle):
     speedway.configure()
+    speedway_toggle.enable()
     ui.notify(f'Speedway configured')
 
 def callback_run_speedway(event: ValueChangeEventArguments, speedway, elements_to_lock, keyboard_wedge_switch):
