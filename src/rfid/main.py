@@ -26,4 +26,4 @@ password = "impinj"
 export_directory = r'C:\Users\pfber\Downloads'
 
 speedway = Speedway(host, username, password, export_directory)
-gui.gui(speedway)
+gui.gui(speedway, export_directory)

@@ -2,7 +2,7 @@ from nicegui import ui, app
 from nicegui.events import ValueChangeEventArguments
 import gui_callbacks
 
-def gui(speedway):
+def gui(speedway, export_directory):
     ui.markdown('## General controls')
     ui.button('Shutdown',
         icon='close',
@@ -16,7 +16,7 @@ def gui(speedway):
     with ui.row():
         ui.button('Race start',
             icon = 'timer',
-            on_click=lambda: gui_callbacks.callback_racestart(racestart_label))
+            on_click=lambda: gui_callbacks.callback_racestart(racestart_label, export_directory))
         racestart_label = ui.markdown("dd/mm/yyyy HH:MM:SS")
         
     keyboard_wedge_switch = ui.switch(

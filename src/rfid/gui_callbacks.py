@@ -2,6 +2,7 @@ from nicegui import ui, app
 from rshell_commands import get_time_UTC
 from nicegui.events import ValueChangeEventArguments
 import pyperclip
+import datetime
 
 def callback_shutdown(event: ValueChangeEventArguments, speedway):
     speedway.reader.disconnect()
@@ -11,12 +12,23 @@ def callback_synchronise(event: ValueChangeEventArguments, speedway):
     speedway.synchronise()
     ui.notify('Speedway synchronised with PC')
 
-def callback_racestart(racestart_label):
+def callback_racestart(racestart_label, export_directory):
     t_utc = get_time_UTC(host = "speedwayr-12-36-0F.local", username = "root", password = "impinj")
     t_syd = t_utc.astimezone()
     racestart_label.content = t_syd.strftime("%d/%m/%Y %H:%M:%S")
     pyperclip.copy(t_syd.strftime("%H:%M:%S"))
+    date_suffix = '_' + datetime.datetime.now().strftime('%Y-%m-%d')
+    filepath = os.path.join(export_directory, 'race_starts'+date_suffix+'.csv')
+    with open(filepath, 'a', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(
+                [t_syd.strftime("%H:%M:%S.%f"),
+                    t_syd.strftime("%d/%m/%Y")])
+
     ui.notify('Race start captured')
+    
+
+
 
 def keyboard_wedge_delay_start(speedway, switch):
     speedway.keyboard_wedge_enabled = True
