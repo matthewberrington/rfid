@@ -1,6 +1,6 @@
 from nicegui import ui, app
 from nicegui.events import ValueChangeEventArguments
-import gui_callbacks
+from . import gui_callbacks
 
 def gui(speedway, export_directory):
     ui.markdown('## General controls')

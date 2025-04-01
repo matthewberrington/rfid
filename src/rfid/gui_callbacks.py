@@ -1,5 +1,5 @@
 from nicegui import ui, app
-from rshell_commands import get_time_UTC
+from .rshell_commands import get_time_UTC
 from nicegui.events import ValueChangeEventArguments
 import pyperclip
 import datetime

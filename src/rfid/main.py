@@ -1,7 +1,7 @@
-from Speedway import Speedway
-import gui
+from .Speedway import Speedway
+from . import gui
 
-def main():
+def run():
     config_dict = {
         'antennas': [1],
         'report_every_n_tags': 1000,
@@ -30,5 +30,5 @@ def main():
     gui.gui(speedway, export_directory)
 
 if __name__ == '__main__':
-    main()
+    run()
     

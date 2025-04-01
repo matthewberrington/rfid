@@ -1,6 +1,6 @@
 from sllurp import llrp
-from rshell_commands import get_time_UTC, set_time_UTC
-from TagReportData import TagReportData
+from .rshell_commands import get_time_UTC, set_time_UTC
+from .TagReportData import TagReportData
 import keyboard
 import datetime
 import os
