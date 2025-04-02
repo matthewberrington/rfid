@@ -1,6 +1,7 @@
 import datetime
 import csv
 import os
+from stat import S_IREAD, S_IWUSR
 
 TAG_PARAMETERS = [
     'ROSpecID',
@@ -33,7 +34,8 @@ class TagReportData:
             with open(filepath, 'a', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow(columns)
-
+        
+        os.chmod(filepath, S_IREAD|S_IWUSR)
         with open(filepath, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow([self.EPC,
@@ -47,6 +49,7 @@ class TagReportData:
                      self.LastSeenTimestampUTC,
                      self.TagSeenCount,
                      self.AccessSpecID])
+        os.chmod(filepath, S_IREAD)
             
     def export_report_simple(self, filepath):
         dt = datetime.datetime.fromtimestamp(self.FirstSeenTimestampUTC/1e6)
@@ -56,9 +59,11 @@ class TagReportData:
                 writer = csv.writer(f)
                 writer.writerow(columns)
 
+        os.chmod(filepath, S_IREAD|S_IWUSR)
         with open(filepath, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(
                 [self.EPC,
                     dt.strftime("%H:%M:%S.%f"),
                     dt.strftime("%d/%m/%Y")])
+        os.chmod(filepath, S_IREAD)

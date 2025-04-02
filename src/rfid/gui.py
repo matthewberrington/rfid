@@ -3,7 +3,7 @@ from nicegui.events import ValueChangeEventArguments
 from . import gui_callbacks
 
 def gui(speedway, export_directory):
-    ui.markdown('## General controls')
+    ui.markdown('#### General controls')
     ui.button('Shutdown',
         icon='close',
         color = 'red',
@@ -24,7 +24,7 @@ def gui(speedway, export_directory):
         on_change=lambda e: gui_callbacks.callback_keyboard_wedge(e, speedway, keyboard_wedge_switch))
     keyboard_wedge_switch.disable()
 
-    ui.markdown('## Speedway controls')
+    ui.markdown('#### Speedway controls')
 
     with ui.row(): 
         ui.markdown("Antennas:")

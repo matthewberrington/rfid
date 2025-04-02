@@ -5,7 +5,7 @@ import pyperclip
 import datetime
 import os
 import csv
-
+from stat import S_IREAD, S_IWUSR
 def callback_shutdown(event: ValueChangeEventArguments, speedway):
     if speedway.reader is not None:
         speedway.reader.disconnect()
@@ -22,11 +22,14 @@ def callback_racestart(racestart_label, export_directory):
     pyperclip.copy(t_syd.strftime("%H:%M:%S"))
     date_suffix = '_' + datetime.datetime.now().strftime('%Y-%m-%d')
     filepath = os.path.join(export_directory, 'race_starts'+date_suffix+'.csv')
+    if os.path.isfile(filepath):
+        os.chmod(filepath, S_IREAD|S_IWUSR)
     with open(filepath, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow(
                 [t_syd.strftime("%H:%M:%S.%f"),
                     t_syd.strftime("%d/%m/%Y")])
+    os.chmod(filepath, S_IREAD)
 
     ui.notify('Race start captured')
     
