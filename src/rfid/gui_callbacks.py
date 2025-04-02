@@ -7,7 +7,8 @@ import os
 import csv
 
 def callback_shutdown(event: ValueChangeEventArguments, speedway):
-    speedway.reader.disconnect()
+    if speedway.reader is not None:
+        speedway.reader.disconnect()
     app.shutdown()
 
 def callback_synchronise(event: ValueChangeEventArguments, speedway):
