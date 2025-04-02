@@ -36,13 +36,13 @@ def gui(speedway, export_directory):
     hex_switch = ui.switch('Hexadecimal encoding', value = True, on_change=lambda e: gui_callbacks.callback_hex_encoding(e, speedway))
     report_period_number = ui.number(
         label='Report period (milliseconds)',
-        value=100,
+        value=speedway.config_dict['report_timeout_ms'],
         min=10, #10 ms minimum to avoid PC being overwhelmed
         format='%d',
               on_change=lambda e: gui_callbacks.callback_report_timeout(e, speedway))
     ignore_tag_number = ui.number(
         label='Ignore tag duration (seconds)',
-        value=60,
+        value=speedway.ignore_tag_time,
         min=20,
         format='%d',
         on_change=lambda e: gui_callbacks.callback_ignore_time(e, speedway))

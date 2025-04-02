@@ -14,12 +14,12 @@ class Speedway:
         self.keyboard_wedge_enabled = False
         self.hex_encoding = True
         self.reader = None
-        self.ignore_tag_time = 20
+        self.ignore_tag_time = 60
         self.ignore_until = {}
         self.config_dict = {
             'antennas': [],
             'report_every_n_tags': 1000,
-            'report_timeout_ms': 1000,
+            'report_timeout_ms': 300,
             'period': 1, #ms to wait before start inventory again
             'tag_content_selector':{
                 'EnableROSpecID': False,

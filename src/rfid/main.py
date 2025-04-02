@@ -1,5 +1,6 @@
 from .Speedway import Speedway
 from . import gui
+import os
 
 def run():
     config_dict = {
@@ -24,8 +25,8 @@ def run():
     host = "speedwayr-12-36-0F.local"
     username = "root"
     password = "impinj"
-    export_directory = r'C:\Users\pfber\Downloads'
-
+    export_directory = r'./logs'
+    os.makedirs(export_directory, exist_ok=True)
     speedway = Speedway(host, username, password, export_directory)
     gui.gui(speedway, export_directory)
 

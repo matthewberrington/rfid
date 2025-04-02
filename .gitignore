@@ -2,3 +2,4 @@
 .venv
 src/rfid/__pycache__
 src/rfid.egg-info
+logs/
